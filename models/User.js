@@ -7,12 +7,20 @@ const insertNewUser = async (name, cpf) => {
   console.log(name, cpf)
 
   user = await db.collection('users').insertOne({ name, cpf });
-  
-  if (!user) return 'oi'
 
   return user
- }
+}
+
+const checkUserCpf = async (cpf) => {
+  const db = await connection();
+  let user = null;
+
+  user = await db.collection('users').findOne({ cpf });
+
+  return user;
+}
 
 module.exports = {
-  insertNewUser
+  insertNewUser,
+  checkUserCpf
 };
