@@ -1,10 +1,10 @@
 const User = require('../models/User')
 
-const insertNewUser = async  (name, cpf) => {
-  const teste = await User.insertNewUser(name, cpf);
-  return teste;
+const newUser = async  (name, cpf) => {
+  const insertedUser = await User.newUser(name, cpf);
+  return insertedUser;
 };
 
 module.exports = {
-  insertNewUser
+  newUser
 };

@@ -1,16 +1,5 @@
 const connection = require('./connection');
 
-const insertNewUser = async (name, cpf) => {
-  const db = await connection();
-  let user = null;
-
-  console.log(name, cpf)
-
-  user = await db.collection('users').insertOne({ name, cpf });
-
-  return user
-}
-
 const checkUserCpf = async (cpf) => {
   const db = await connection();
   let user = null;
@@ -20,7 +9,22 @@ const checkUserCpf = async (cpf) => {
   return user;
 }
 
+const newUser = async (name, cpf) => {
+  const db = await connection();
+
+  const user = await checkUserCpf(cpf);
+
+  if (user) {
+    return "CPF already in use"
+  }
+
+  const { insertedId } = await db.collection('users').insertOne({ name, cpf });
+
+  return { id: insertedId, name };
+}
+
+
 module.exports = {
-  insertNewUser,
+  newUser,
   checkUserCpf
 };

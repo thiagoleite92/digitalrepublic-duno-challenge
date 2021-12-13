@@ -4,8 +4,8 @@ const route = express.Router();
 
 const User = require('../controllers/User');
 
-const {isDataUserValid, isUniqueCpf} = require('../middlewares/User')
+const {isValidName, isValidCpf} = require('../middlewares/User')
 
-route.get('/', isDataUserValid, isUniqueCpf, User.insertNewUser)
+route.get('/', isValidName, isValidCpf, User.newUser)
 
 module.exports = route;
