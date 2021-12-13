@@ -15,10 +15,10 @@ const getUser = async (cpf) => {
   const user = await checkUserCpf(cpf);
 
   if (!user) {
-    return "CPF not found";
+    return null;
   }
 
-  return user;
+  return { name: user.name, cpf: user.cpf, balance: user.balance.toFixed(2) }
 }
 
 const newUser = async (name, cpf, balance = INITIAL_DEPOSIT) => {
@@ -26,28 +26,18 @@ const newUser = async (name, cpf, balance = INITIAL_DEPOSIT) => {
 
   const { insertedId } = await db.collection('users').insertOne({ name, cpf, balance });
 
-  return { id: insertedId, name, balance };
+  return { id: insertedId, name, balance: balance.toFixed(2) };
 }
 
 const updateBalance = async (cpf, value) => {
   const db = await connection();
-  const user = await getUser(cpf);
 
-  if (!user) {
-    return "CPF not found";
-  }
-
-  const { balance } = user;
-
-  if (balance - value < 0) {
-    return 'Insuficiente funds'
-  }
-
+  return 'oi'
 };
 
 module.exports = {
   newUser,
   checkUserCpf,
   updateBalance,
-  getUser
+  getUser,
 };

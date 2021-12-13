@@ -11,6 +11,10 @@ const newUser = async (req, res) => {
 const getUser = async (req, res) => {
   const { cpf } = req.body;
   const user = await User.getUser(cpf);
+  if (!user) {
+    return res.status(200).json('CPF not found');
+  }
+
   return res.status(200).json(user);
 }
 
