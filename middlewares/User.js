@@ -1,3 +1,5 @@
+const User = require('../models/User')
+
 const BAD_STATUS = 400;
 const NAME_MIN_LENGTH = 12;
 const CPF_MAX_LENGTH = 11;
@@ -29,12 +31,19 @@ const isValidCpf = (req, res, next) => {
     return res.status(BAD_STATUS).json('CPF must be informed');
   }
 
-  if (typeof cpf !== 'string' || cpf.length > CPF_MAX_LENGTH) {
-    return res.status(BAD_STATUS).json('Cpf: only letters are needed');
+  if (cpf.length > CPF_MAX_LENGTH || !cpf.match(CPF_PATTERN)) {
+    return res.status(BAD_STATUS).json('CPF must be format: 12345678900');
   }
 
-  if (!cpf.match(CPF_PATTERN)) {
-    return res.status(BAD_STATUS).json('CPF informed is not valid');
+  next();
+}
+
+const checkCpfUniquity = async (req, res, next) => {
+  const { cpf } = req.body;
+  const user =  await User.checkUserCpf(cpf)
+
+  if (user) {
+    return res.status(409).json('CPF already in use');
   }
 
   next();
@@ -43,4 +52,5 @@ const isValidCpf = (req, res, next) => {
 module.exports = {
   isValidName,
   isValidCpf,
+  checkCpfUniquity,
 };

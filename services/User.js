@@ -5,6 +5,18 @@ const newUser = async  (name, cpf) => {
   return insertedUser;
 };
 
+const getUser = async (cpf) => {
+  const user = await User.getUser(cpf);
+  return user;
+}
+
+const updateBalance = async (cpf, value) => {
+  const balance = await User.updateBalance(cpf, value);
+  return balance
+}
+
 module.exports = {
-  newUser
+  newUser,
+  updateBalance,
+  getUser
 };

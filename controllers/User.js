@@ -8,6 +8,22 @@ const newUser = async (req, res) => {
   return res.status(200).json(insertedUser);
 }
 
+const getUser = async (req, res) => {
+  const { cpf } = req.body;
+  const user = await User.getUser(cpf);
+  return res.status(200).json(user);
+}
+
+const updateBalance = async (req, res) => {
+  const { cpf, value } = req.body;
+
+  const newBalance = await User.updateBalance(cpf, value);
+
+  return res.status(201).json(newBalance);
+}
+
 module.exports = {
   newUser,
+  updateBalance,
+  getUser,
 };
