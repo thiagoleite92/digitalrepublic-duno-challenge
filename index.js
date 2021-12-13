@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv')
 
 const PORT = 3000;
 
