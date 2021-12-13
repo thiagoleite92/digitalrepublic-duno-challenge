@@ -1,9 +1,13 @@
 const User = require('../services/User')
 
-const insertNewUser = (req, res) => {
-  const teste = User.insertNewUser();
+const insertNewUser = async (req, res) => {
+  const { name, cpf } = req.body;
+
+  console.log(name, cpf)
+
+  const user = await User.insertNewUser(name, cpf);
   
-  return res.status(200).json(teste);
+  return res.status(200).json(user);
 }
 
 module.exports = {
