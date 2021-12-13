@@ -30,4 +30,4 @@ const isUniqueCpf = async (req, res, next) => {
 module.exports = {
   isDataUserValid,
   isUniqueCpf,
-}
+};
