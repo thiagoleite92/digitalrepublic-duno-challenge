@@ -1,7 +1,9 @@
 const User = require('../models/User')
 
 const BAD_STATUS = 400;
+const NAME_PATTERN = new RegExp(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/)
 const NAME_MIN_LENGTH = 12;
+const NAME_MAX_LENGTH = 25;
 const CPF_MAX_LENGTH = 11;
 const CPF_PATTERN = new RegExp(/^[0-9]{3}[0-9]{3}[0-9]{3}[0-9]{2}/)
 
@@ -9,16 +11,15 @@ const isValidName = (req, res, next) => {
   const { name } = req.body;
 
   if (!name) {
-    return res.status(BAD_STATUS).json('Name must be informed');
+    return res.status(BAD_STATUS).json('Name must be informed.');
   }
 
-  if (typeof name !== 'string') {
-    return res.status(BAD_STATUS).json('Name must be letters');
+  if ((typeof name != 'string' || !name.match(NAME_PATTERN))) {
+    return res.status(BAD_STATUS).json('Name must contain only letters.');
   }
 
-
-  if (name.length < NAME_MIN_LENGTH) {
-    return res.status(BAD_STATUS).json('Name must be at least ' + NAME_MIN_LENGTH)
+  if (name.length < NAME_MIN_LENGTH && name.length > NAME_MAX_LENGTH) {
+    return res.status(BAD_STATUS).json('Name must be between 12 and 255 characters.')
   }
 
   next();
@@ -28,11 +29,11 @@ const isValidCpf = (req, res, next) => {
   const { cpf } = req.body;
 
   if (!cpf) {
-    return res.status(BAD_STATUS).json('CPF must be informed');
+    return res.status(BAD_STATUS).json('CPF must be informed.');
   }
 
   if (cpf.length > CPF_MAX_LENGTH || !cpf.match(CPF_PATTERN)) {
-    return res.status(BAD_STATUS).json('CPF must be format: 12345678900');
+    return res.status(BAD_STATUS).json('CPF must be format: 12345678900.');
   }
 
   next();
