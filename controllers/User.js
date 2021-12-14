@@ -5,7 +5,7 @@ const newUser = async (req, res) => {
 
   const insertedUser = await User.newUser(name, cpf);
   
-  return res.status(200).json(insertedUser);
+  return res.status(201).json(insertedUser);
 }
 
 const getUser = async (req, res) => {

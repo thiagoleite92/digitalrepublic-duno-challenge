@@ -1,6 +1,6 @@
 const connection = require('./connection');
 
-const INITIAL_DEPOSIT = 1000
+const INITIAL_DEPOSIT = 0;
 
 const checkUserCpf = async (cpf) => {
   const db = await connection();
@@ -24,9 +24,9 @@ const getUser = async (cpf) => {
 const newUser = async (name, cpf, balance = INITIAL_DEPOSIT) => {
   const db = await connection();
 
-  const { insertedId } = await db.collection('users').insertOne({ name, cpf, balance });
+  await db.collection('users').insertOne({ name, cpf, balance });
 
-  return { id: insertedId, name, balance: balance };
+  return { message: 'A new user has been registered', name, cpf, balance };
 }
 
 const balanceWithdraw = async (cpf, value) => {
