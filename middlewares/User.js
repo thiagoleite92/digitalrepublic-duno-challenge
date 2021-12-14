@@ -78,6 +78,10 @@ const isValidValue = (req, res, next) => {
     return res.status(BAD_STATUS).json('Value is missing or not valid')
   }
 
+  if (value < 0) {
+    return res.status(BAD_STATUS).json('Value cannot be negative')
+  }
+
   next();
 }
 
