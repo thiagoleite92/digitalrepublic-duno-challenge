@@ -10,13 +10,19 @@ const getUser = async (cpf) => {
   return user;
 }
 
-const updateBalance = async (cpf, value) => {
-  const balance = await User.updateBalance(cpf, value);
-  return balance
+const balanceWithdraw = async (cpf, value) => {
+  const balance = await User.balanceWithdraw(cpf, value);
+  return balance;
+}
+
+const balanceDeposit = async (cpf, value) => {
+  const balance = await User.balanceDeposit(cpf, value);
+  return balance;
 }
 
 module.exports = {
   newUser,
-  updateBalance,
+  balanceWithdraw,
+  balanceDeposit,
   getUser
 };

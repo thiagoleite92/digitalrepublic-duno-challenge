@@ -1,6 +1,6 @@
 const connection = require('./connection');
 
-const INITIAL_DEPOSIT = 0.00
+const INITIAL_DEPOSIT = 1000
 
 const checkUserCpf = async (cpf) => {
   const db = await connection();
@@ -18,7 +18,7 @@ const getUser = async (cpf) => {
     return null;
   }
 
-  return { name: user.name, cpf: user.cpf, balance: user.balance.toFixed(2) }
+  return { name: user.name, cpf: user.cpf, balance: user.balance }
 }
 
 const newUser = async (name, cpf, balance = INITIAL_DEPOSIT) => {
@@ -26,18 +26,40 @@ const newUser = async (name, cpf, balance = INITIAL_DEPOSIT) => {
 
   const { insertedId } = await db.collection('users').insertOne({ name, cpf, balance });
 
-  return { id: insertedId, name, balance: balance.toFixed(2) };
+  return { id: insertedId, name, balance: balance };
 }
 
-const updateBalance = async (cpf, value) => {
+const balanceWithdraw = async (cpf, value) => {
   const db = await connection();
 
-  return 'oi'
+  await db.collection('users').findOneAndUpdate(
+    { cpf },
+    { $inc: { balance: -value } },
+  )
+
+  const { name, balance } = await db.collection('users').findOne({ cpf });
+
+  return { name, balance };
+};
+
+const balanceDeposit = async (cpf, value) => {
+  const db = await connection();
+
+  console.log(cpf, value, '---------------------------')
+
+  await db.collection('users').findOneAndUpdate(
+    { cpf },
+    { $inc: { balance: value } },
+  )
+  const { name, balance } = await db.collection('users').findOne({ cpf });
+
+  return { name, balance };
 };
 
 module.exports = {
   newUser,
   checkUserCpf,
-  updateBalance,
+  balanceWithdraw,
+  balanceDeposit,
   getUser,
 };

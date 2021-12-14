@@ -64,8 +64,6 @@ const checkUserBalance = async (req, res, next) => {
 const checkUserRegister = async (req, res, next) => {
   const { cpf } = req.body;
   const user = await User.getUser(cpf);
-  
-  console.log(user);
 
   if (!user) { 
     return res.status(BAD_STATUS).json('CPF not found');
@@ -74,9 +72,19 @@ const checkUserRegister = async (req, res, next) => {
   next();
 }
 
+const isValidValue = (req, res, next) => {
+  const { value } = req.body;
+  if (!value || typeof value != 'number') {
+    return res.status(BAD_STATUS).json('Value is missing or not valid')
+  }
+
+  next();
+}
+
 module.exports = {
   isValidName,
   isValidCpf,
+  isValidValue,
   checkCpfUniquity,
   checkUserBalance,
   checkUserRegister,

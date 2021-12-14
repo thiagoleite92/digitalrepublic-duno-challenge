@@ -18,16 +18,25 @@ const getUser = async (req, res) => {
   return res.status(200).json(user);
 }
 
-const updateBalance = async (req, res) => {
+const balanceWithdraw = async (req, res) => {
   const { cpf, value } = req.body;
 
-  const newBalance = await User.updateBalance(cpf, value);
+  const newBalance = await User.balanceWithdraw(cpf, value);
+
+  return res.status(201).json(newBalance);
+}
+
+const balanceDeposit = async (req, res) => {
+  const { cpf, value } = req.body;
+
+  const newBalance = await User.balanceDeposit(cpf, value);
 
   return res.status(201).json(newBalance);
 }
 
 module.exports = {
   newUser,
-  updateBalance,
+  balanceWithdraw,
+  balanceDeposit,
   getUser,
 };
