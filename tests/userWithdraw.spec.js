@@ -9,8 +9,15 @@ const VALID_NAME = 'Thiago José Leite';
 const VALID_CPF = '123.456.789-00';
 const INVALID_CPF = '987.654.321-00';
 
+const INITIAL_BALANCE = 0;
+
 const NEGATIVE_VALUE = -100;
 const POSITIVE_VALUE = 100;
+
+const SUCCESSFUL_MONEY_WITHDRAW = {
+  balance: 900,
+  name: 'Thiago José Leite'
+}
 
 describe('Validating user balance withdraw', () => {
   let connection;
@@ -29,6 +36,7 @@ describe('Validating user balance withdraw', () => {
     await db.collection('users').insertOne({
       name: VALID_NAME,
       cpf: VALID_CPF,
+      balance: INITIAL_BALANCE,
     });
   });
 
@@ -110,5 +118,36 @@ describe('Validating user balance withdraw', () => {
           expect(result).toBe('Insuficcient funds.');
         });
     });
+
+    describe('Validate withdraw money with correct information', () => {
+      beforeEach(async () => {
+        await db.collection('users').findOneAndUpdate(
+          { cpf: VALID_CPF },
+          {
+            $inc: { balance: 1000 },
+          });
+      });
+
+      afterAll(async () => {
+        await db.collection('users').deleteMany({});
+        await connection.close();
+      })
+
+      it('Should be possible to withdraw money with correct cpf and correct value amount', async () => {
+        await frisby
+          .patch(`${endPoint}/withdraw/`,
+            {
+              value: POSITIVE_VALUE,
+              cpf: VALID_CPF,
+            })
+          .expect('status', 201)
+          .then((response) => {
+            const { body } = response;
+            console.log(body);
+            const result = JSON.parse(body);
+            expect(result).toStrictEqual(SUCCESSFUL_MONEY_WITHDRAW);
+          });
+      })
+    })
   })
 });

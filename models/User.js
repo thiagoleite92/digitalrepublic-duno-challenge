@@ -1,6 +1,6 @@
 const connection = require('./connection');
 
-const INITIAL_DEPOSIT = 0;
+const INITIAL_BALANCE = 0;
 
 const checkUserCpf = async (cpf) => {
   const db = await connection();
@@ -21,7 +21,7 @@ const getUser = async (cpf) => {
   return { name: user.name, cpf: user.cpf, balance: user.balance }
 }
 
-const newUser = async (name, cpf, balance = INITIAL_DEPOSIT) => {
+const newUser = async (name, cpf, balance = INITIAL_BALANCE) => {
   const db = await connection();
 
   await db.collection('users').insertOne({ name, cpf, balance });

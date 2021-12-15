@@ -53,9 +53,7 @@ const checkUserBalance = async (req, res, next) => {
   const { cpf, value } = req.body;
   const user = await User.getUser(cpf);
 
-  const { balance } = user;
-
-  if (balance - value < 0) {
+  if (user.balance - value < 0) {
     return res.status(BAD_STATUS).json('Insuficcient funds.');
   };
 
