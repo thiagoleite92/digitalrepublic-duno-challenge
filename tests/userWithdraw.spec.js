@@ -113,7 +113,6 @@ describe('Validating user balance withdraw', () => {
         .expect('status', 400)
         .then((response) => {
           const { body } = response;
-          console.log(body);
           const result = JSON.parse(body);
           expect(result).toBe('Insuficcient funds.');
         });
@@ -143,7 +142,6 @@ describe('Validating user balance withdraw', () => {
           .expect('status', 201)
           .then((response) => {
             const { body } = response;
-            console.log(body);
             const result = JSON.parse(body);
             expect(result).toStrictEqual(SUCCESSFUL_MONEY_WITHDRAW);
           });

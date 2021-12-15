@@ -88,6 +88,15 @@ const isValidValue = (req, res, next) => {
   next();
 }
 
+const isValidValueDeposit = (req, res, next) => {
+  const { value } = req.body;
+  if (value > 2000) {
+    return res.status(BAD_STATUS).json('Sorry, cannot deposit amount values greater than 2000');
+  }
+
+  next();
+};
+
 module.exports = {
   isValidName,
   isValidCpf,
@@ -95,4 +104,5 @@ module.exports = {
   checkCpfUniquity,
   checkUserBalance,
   checkUserRegister,
+  isValidValueDeposit,
 };
