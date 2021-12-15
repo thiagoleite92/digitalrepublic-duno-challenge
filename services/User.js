@@ -20,9 +20,15 @@ const balanceDeposit = async (cpf, value) => {
   return balance;
 }
 
+const transferBetweenUsers = async ({cpf_transfer, cpf_receiver, value}) => {
+  const users = await User.transferBetweenUsers(cpf_transfer, cpf_receiver, value);
+  return users;
+}
+
 module.exports = {
   newUser,
   balanceWithdraw,
   balanceDeposit,
-  getUser
+  getUser,
+  transferBetweenUsers
 };

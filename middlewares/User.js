@@ -91,11 +91,38 @@ const isValidValue = (req, res, next) => {
 const isValidValueDeposit = (req, res, next) => {
   const { value } = req.body;
   if (value > 2000) {
-    return res.status(BAD_STATUS).json('Sorry, cannot deposit amount values greater than 2000');
+    return res.status(BAD_STATUS).json('Sorry, cannot deposit amount values greater than 2000.');
   }
 
   next();
 };
+
+const isValidUsersCpf = async (req, res, next) => {
+  const { cpf_transfer, cpf_receiver } = req.body;
+
+  if (!cpf_transfer || !cpf_receiver) {
+    return res.status(BAD_STATUS).json('The CPF from transferor or receiver is missing.');
+  }
+
+  const usersCpf = await User.checkUsersCpf(req.body);
+
+  if (usersCpf.length != 2) {
+    return res.status(BAD_STATUS).json('One or both CPFs are misinformed.')
+  }
+
+  next();
+}
+
+const isValidAmountTransfer = async (req, res, next) => {
+  const { cpf_transfer, value } = req.body;
+  const user = await User.getUser(cpf_transfer);
+
+  if (user.balance - value < 0) {
+    return res.status(BAD_STATUS).json('The transfer has no sufficient funds.');
+  };
+
+  next();
+}
 
 module.exports = {
   isValidName,
@@ -105,4 +132,6 @@ module.exports = {
   checkUserBalance,
   checkUserRegister,
   isValidValueDeposit,
+  isValidUsersCpf,
+  isValidAmountTransfer,
 };

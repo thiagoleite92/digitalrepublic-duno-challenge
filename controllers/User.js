@@ -34,9 +34,17 @@ const balanceDeposit = async (req, res) => {
   return res.status(201).json(newBalance);
 }
 
+const transferBetweenUsers = async (req, res) => {
+  const { body } = req;
+  const users = await User.transferBetweenUsers(body)
+
+  return res.status(200).json(users);
+}
+
 module.exports = {
   newUser,
   balanceWithdraw,
   balanceDeposit,
   getUser,
+  transferBetweenUsers
 };

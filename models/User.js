@@ -45,8 +45,6 @@ const balanceWithdraw = async (cpf, value) => {
 const balanceDeposit = async (cpf, value) => {
   const db = await connection();
 
-  console.log(cpf, value, '---------------------------')
-
   await db.collection('users').findOneAndUpdate(
     { cpf },
     { $inc: { balance: value } },
@@ -56,10 +54,47 @@ const balanceDeposit = async (cpf, value) => {
   return { name, balance };
 };
 
+const checkUsersCpf = async ({ cpf_transfer, cpf_receiver }) => {
+  const db = await connection();
+
+  const users = await db.collection('users').find(
+    { cpf: { $in: [cpf_transfer, cpf_receiver] } },
+    { projection:{ _id: false } },
+  ).toArray();
+
+  return users;
+}
+
+const transferBetweenUsers = async (cpf_transfer, cpf_receiver, value) => {
+  const db = await connection();
+
+  const initialState = await checkUsersCpf({ cpf_transfer, cpf_receiver })
+
+  await db.collection('users').findOneAndUpdate(
+    {
+      cpf: cpf_transfer
+    },
+    {
+      $inc: { balance: -value }
+    }
+  );
+
+  await db.collection('users').findOneAndUpdate(
+    { cpf: cpf_receiver },
+    { $inc: { balance: value } }
+  )
+
+  const finalState = await checkUsersCpf({ cpf_transfer, cpf_receiver })
+
+  return { amount_transfered: value, initialState, finalState, }
+}
+
 module.exports = {
   newUser,
   checkUserCpf,
   balanceWithdraw,
   balanceDeposit,
   getUser,
+  checkUsersCpf,
+  transferBetweenUsers,
 };
