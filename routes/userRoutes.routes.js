@@ -15,7 +15,7 @@ const {
 
 route.get('/', User.getUser)
 route.post('/register/', isValidName, isValidCpf,checkCpfUniquity, User.newUser)
-route.patch('/withdraw/',isValidValue, checkUserRegister, checkUserBalance, User.balanceWithdraw)
-route.patch('/deposit/', isValidValue, checkUserRegister, User.balanceDeposit)
+route.patch('/withdraw/', checkUserRegister, isValidValue, checkUserBalance, User.balanceWithdraw)
+route.patch('/deposit/', checkUserRegister, isValidValue, User.balanceDeposit)
 
 module.exports = route;

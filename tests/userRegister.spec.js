@@ -1,6 +1,5 @@
 const frisby = require('frisby');
 const { MongoClient } = require('mongodb');
-require('dotenv').config();
 
 const endPoint = 'http://localhost:3000/user';
 const DB_URL_NAME = 'mongodb://localhost:27017/DigitalRepublic/';
@@ -42,6 +41,7 @@ describe('Validating the register of a new user', () => {
   afterAll(async () => {
     await connection.close();
   })
+  
   describe('Field name validation ', () => {
     it('Field name is required', async () => {
       await frisby
