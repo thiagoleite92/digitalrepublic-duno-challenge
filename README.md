@@ -13,14 +13,14 @@
 
 ### Podem ser feitas requisções para:
 
-1. Registrar um novo usuário -> /user/register
+1. Registrar um novo usuário -> http://localhost:3000/user/register
   - É esperado no corpo da requisição um body no formato {"name: "", "cpf": ""}
   
-2. Sacar dinheiro da conta -> /user/withdraw
+2. Sacar dinheiro da conta -> http://localhost:3000/user/withdraw
   - É esperado no corpo da requisição um body no formato {"cpf": "", "value": ""}
   
-3. Depositar dinheiro na conta -> /user/deposit
+3. Depositar dinheiro na conta -> http://localhost:3000/user/deposit
   - É esperado no corpo da requisição um body no formato {"cpf": "", "value": ""}
 
-4. E transferir dinheiro entre contas -> /user/transfer
+4. E transferir dinheiro entre contas -> http://localhost:3000/user/transfer
   - É esperado no corpo da requisição um body no formato {"cpf_receiver": "",	"cpf_transfer": "", "value": ""}
