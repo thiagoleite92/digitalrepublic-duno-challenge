@@ -166,7 +166,7 @@ describe('Validating the register of a new user', () => {
     });
 
     describe('Register with duplicated cpf is not possible', () => {
-      it('should not be possible to register two users with the same cpf', async () => {
+      it('Shouldn\'t be possible to register two users with the same cpf', async () => {
         await frisby
           .post(`${endPoint}/register/`,
             {

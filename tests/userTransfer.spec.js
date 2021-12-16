@@ -13,9 +13,33 @@ const ANOTHER_VALID_CPF = '111.222.333-99'
 
 const INITIAL_BALANCE = 1000;
 const MORE_THAN_INITIAL_VALUE = 1001;
-const VALID_VALUE_TO_TRANSFER = 500;
+const VALID_VALUE_TO_TRANSFER = 50;
 
 const NEGATIVE_VALUE = -1;
+
+const SUCESSFUL_MONEY_TRANSFER = {
+  amount_transfered: 50,
+  initialState: [
+    { balance: 1000, cpf: '123.456.789-00', name: 'Thiago José Leite' },
+    { balance: 1000, cpf: '111.222.333-99', name: 'Bruno Vasconcelos' },
+  ],
+  finalState: [
+    { balance: 950, cpf: '123.456.789-00', name: 'Thiago José Leite'},
+    { balance: 1050, cpf: '111.222.333-99', name: 'Bruno Vasconcelos' },
+  ],
+}
+
+const SUCESSFUL_MONEY_TRANSFER_SECONDTIME = {
+  amount_transfered: 50,
+  initialState: [
+    { balance: 950, cpf: '123.456.789-00', name: 'Thiago José Leite' },
+    { balance: 1050, cpf: '111.222.333-99', name: 'Bruno Vasconcelos' },
+  ],
+  finalState: [
+    { balance: 900, cpf: '123.456.789-00', name: 'Thiago José Leite'},
+    { balance: 1100, cpf: '111.222.333-99', name: 'Bruno Vasconcelos' },
+  ],
+}
 
 describe('Validating transfers between users', () => {
   beforeAll(async () => {
@@ -40,7 +64,7 @@ describe('Validating transfers between users', () => {
   })
 
   describe('Validate the value informed by the user', () => {
-    it('Should not be possible to transfer money with no value informed', async () => {
+    it('Shouldn\'t be possible to transfer money with no value informed', async () => {
       await frisby
         .patch(`${endPoint}/transfer/`,
           {
@@ -56,7 +80,7 @@ describe('Validating transfers between users', () => {
         });
     });
 
-    it('Should not be possible to transfer money if the value is negative', async () => {
+    it('Shouldn\'t be possible to transfer money if the value is negative', async () => {
       await frisby
         .patch(`${endPoint}/transfer/`,
           {
@@ -74,7 +98,7 @@ describe('Validating transfers between users', () => {
 
 
   describe('Validate the register of both users', () => {
-    it('Should not be possible to transfer, if the cpf from receiver and transferor are not informed', async () => {
+    it('Shouldn\'t be possible to transfer, if the cpf from receiver and transferor are not informed', async () => {
       await frisby
         .patch(`${endPoint}/transfer/`,
           {
@@ -88,7 +112,7 @@ describe('Validating transfers between users', () => {
         })
     });
 
-    it('Should not be possible to transfer, if the cpf from transferor hasn\'t be informed', async () => {
+    it('Shouldn\'t be possible to transfer, if the cpf from transferor hasn\'t be informed', async () => {
       await frisby
         .patch(`${endPoint}/transfer/`,
           {
@@ -103,7 +127,7 @@ describe('Validating transfers between users', () => {
         })
     });
 
-    it('Should not be possible to transfer, if the cpf from receiver hasn\'t be informed', async () => {
+    it('Shouldn\'t be possible to transfer, if the cpf from receiver hasn\'t be informed', async () => {
       await frisby
         .patch(`${endPoint}/transfer/`,
           {
@@ -118,7 +142,7 @@ describe('Validating transfers between users', () => {
         })
     });
 
-    it('Should not be possible to transfer, if both cpfs, transfer and receiver, are misinformed', async () => {
+    it('Shouldn\'t be possible to transfer, if both cpfs, transfer and receiver, are misinformed', async () => {
       await frisby
         .patch(`${endPoint}/transfer/`,
           {
@@ -134,7 +158,7 @@ describe('Validating transfers between users', () => {
         })
     });
 
-    it('Should not be possible to transfer, if at least one cpf has been misinformed', async () => {
+    it('Shouldn\'t be possible to transfer, if at least one cpf has been misinformed', async () => {
       await frisby
         .patch(`${endPoint}/transfer/`,
           {
@@ -150,7 +174,7 @@ describe('Validating transfers between users', () => {
         });
     });
 
-    it('Should not be possible to transfer, if at least one cpf has been misinformed', async () => {
+    it('Shouldn\'t be possible to transfer, if at least one cpf has been misinformed', async () => {
       await frisby
         .patch(`${endPoint}/transfer/`,
           {
@@ -168,7 +192,7 @@ describe('Validating transfers between users', () => {
   });
 
   describe('Validate amount to be transfered by the transfer', () => {
-    it('Should not be possible transfer, if the amount value results in a negative balance for the transfer', async () => {
+    it('Shouldn\'t be possible transfer, if the amount value results in a negative balance for the transfer', async () => {
       await frisby
         .patch(`${endPoint}/transfer/`,
           {
@@ -184,4 +208,52 @@ describe('Validating transfers between users', () => {
         });
     });
   });
+
+  describe('Validate the transfer between accounts', () => {
+    it('Should be possible transfer values between accounts', async () => {
+      await frisby
+        .patch(`${endPoint}/transfer`,
+          {
+            value: VALID_VALUE_TO_TRANSFER,
+            cpf_transfer: VALID_CPF,
+            cpf_receiver: ANOTHER_VALID_CPF,
+          })
+        .expect('status', 200)
+        .then((response) => {
+          const { body } = response;
+          const result = JSON.parse(body);
+          expect(result).toStrictEqual(SUCESSFUL_MONEY_TRANSFER);
+        });
+    });
+
+    it('Should be possible transfer values between accounts more than one time', async () => {
+      await frisby
+        .patch(`${endPoint}/transfer`,
+          {
+            value: VALID_VALUE_TO_TRANSFER,
+            cpf_transfer: VALID_CPF,
+            cpf_receiver: ANOTHER_VALID_CPF,
+          })
+        .expect('status', 200)
+        .then((response) => {
+          const { body } = response;
+          const result = JSON.parse(body);
+          expect(result).toStrictEqual(SUCESSFUL_MONEY_TRANSFER);
+        });
+
+        await frisby
+        .patch(`${endPoint}/transfer`,
+          {
+            value: VALID_VALUE_TO_TRANSFER,
+            cpf_transfer: VALID_CPF,
+            cpf_receiver: ANOTHER_VALID_CPF,
+          })
+        .expect('status', 200)
+        .then((response) => {
+          const { body } = response;
+          const result = JSON.parse(body);
+          expect(result).toStrictEqual(SUCESSFUL_MONEY_TRANSFER_SECONDTIME);
+        });
+    });
+  })
 });

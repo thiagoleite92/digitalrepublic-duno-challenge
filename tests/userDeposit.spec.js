@@ -58,7 +58,7 @@ describe('Validating user balance deposit', () => {
   })
 
   describe('Validate if the user has a registered cpf', () => {
-    it('Should not be possible to manage a account without cpf', async () => {
+    it('Shouldn\'t be possible to manage a account without cpf', async () => {
       await frisby
         .patch(`${endPoint}/deposit/`,
           {})
@@ -70,7 +70,7 @@ describe('Validating user balance deposit', () => {
         });
     });
 
-    it('Should not be possible to manage a account with a misinformed cpf', async () => {
+    it('Shouldn\'t be possible to manage a account with a misinformed cpf', async () => {
       await frisby
         .patch(`${endPoint}/deposit/`,
           {
@@ -86,7 +86,7 @@ describe('Validating user balance deposit', () => {
   });
 
   describe('Validate the value informed by the user', () => {
-    it('Should not be possible to deposit money with no value informed', async () => {
+    it('Shouldn\'t be possible to deposit money with no value informed', async () => {
       await frisby
         .patch(`${endPoint}/deposit/`,
           {
@@ -101,7 +101,7 @@ describe('Validating user balance deposit', () => {
         });
     });
 
-    it('Should not be possible to deposit money if the value is negative', async () => {
+    it('Shouldn\'t be possible to deposit money if the value is negative', async () => {
       await frisby
         .patch(`${endPoint}/deposit/`,
           {
@@ -118,7 +118,7 @@ describe('Validating user balance deposit', () => {
   });
 
   describe('Validating the amount value informed by the user', () => {
-    it('Should not be possible to deposit a amount value greater than 2.000', async () => {
+    it('Shouldn\'t be possible to deposit a amount value greater than 2.000', async () => {
       await frisby
         .patch(`${endPoint}/deposit/`,
           {
@@ -129,7 +129,7 @@ describe('Validating user balance deposit', () => {
         .then((response) => {
           const { body } = response;
           const result = JSON.parse(body);
-          expect(result).toBe('Sorry, cannot deposit amount values greater than 2000');
+          expect(result).toBe('Sorry, cannot deposit amount values greater than 2000.');
         });
     });
 
@@ -204,7 +204,7 @@ describe('Validating user balance deposit', () => {
             .then((response) => {
               const { body } = response;
               const result = JSON.parse(body);
-              expect(result).toBe('Sorry, cannot deposit amount values greater than 2000');
+              expect(result).toBe('Sorry, cannot deposit amount values greater than 2000.');
             });
 
           await frisby

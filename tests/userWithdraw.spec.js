@@ -45,7 +45,7 @@ describe('Validating user balance withdraw', () => {
   })
 
   describe('Validate if the user has a registered cpf', () => {
-    it('Should not be possible to manage a account without cpf', async () => {
+    it('Shouldn\'t be possible to manage a account without cpf', async () => {
       await frisby
         .patch(`${endPoint}/withdraw/`,
           {})
@@ -57,7 +57,7 @@ describe('Validating user balance withdraw', () => {
         });
     });
 
-    it('Should not be possible to manage a account with a misinformed cpf', async () => {
+    it('Shouldn\'t be possible to manage a account with a misinformed cpf', async () => {
       await frisby
         .patch(`${endPoint}/withdraw/`,
           {
@@ -73,7 +73,7 @@ describe('Validating user balance withdraw', () => {
   });
 
   describe('Validate the value informed by the user', () => {
-    it('Should not be possible to withdraw money with no value informed', async () => {
+    it('Shouldn\'t be possible to withdraw money with no value informed', async () => {
       await frisby
         .patch(`${endPoint}/withdraw/`,
           {
@@ -88,7 +88,7 @@ describe('Validating user balance withdraw', () => {
         });
     });
 
-    it('Should not be possible to withdraw money if the value is negative', async () => {
+    it('Shouldn\'t be possible to withdraw money if the value is negative', async () => {
       await frisby
         .patch(`${endPoint}/withdraw/`,
           {
@@ -103,7 +103,7 @@ describe('Validating user balance withdraw', () => {
         });
     });
 
-    it('Should not be possible to withdraw money if the result balance is negative', async () => {
+    it('Shouldn\'t be possible to withdraw money if the result balance is negative', async () => {
       await frisby
         .patch(`${endPoint}/withdraw/`,
           {
