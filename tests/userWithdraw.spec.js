@@ -128,7 +128,6 @@ describe('Validating user balance withdraw', () => {
       });
 
       afterAll(async () => {
-        await db.collection('users').deleteMany({});
         await connection.close();
       })
 
