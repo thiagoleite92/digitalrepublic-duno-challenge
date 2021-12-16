@@ -1,6 +1,6 @@
 const express = require('express');
 
-const route = express.Router();
+const router = express.Router();
 
 const User = require('../controllers/User');
 
@@ -16,10 +16,10 @@ const {
   isValidAmountTransfer,
 } = require('../middlewares/User')
 
-route.get('/', User.getUser)
-route.post('/register/', isValidName, isValidCpf, checkCpfUniquity, User.newUser)
-route.patch('/withdraw/', checkUserRegister, isValidValue, checkUserBalance, User.balanceWithdraw)
-route.patch('/deposit/', checkUserRegister, isValidValue, isValidValueDeposit, User.balanceDeposit)
-route.patch('/transfer/', isValidValue, isValidUsersCpf, isValidAmountTransfer, User.transferBetweenUsers)
+router.get('/', User.getUser)
+router.post('/register/', isValidName, isValidCpf, checkCpfUniquity, User.newUser)
+router.patch('/withdraw/', checkUserRegister, isValidValue, checkUserBalance, User.balanceWithdraw)
+router.patch('/deposit/', checkUserRegister, isValidValue, isValidValueDeposit, User.balanceDeposit)
+router.patch('/transfer/', isValidValue, isValidUsersCpf, isValidAmountTransfer, User.transferBetweenUsers)
 
-module.exports = route;
+module.exports = router;
